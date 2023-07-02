@@ -68,10 +68,10 @@ collision lors du hashing des URL longues (cf plus bas).
 
 ### Fonctionnement général
 
-L'application permet, depuis un endpoint utilisant le verbe POST de soumettre une requête au
-format JSON.
+#### Endpoint - POST : http://adresse_du_serveur/rest
 
-POST : http://adresse_du_serveur/rest
+L'application permet, depuis un endpoint utilisant le verbe POST de soumettre une requête au
+format JSON dont le format est le suivant
 
 ```json
 {
@@ -152,6 +152,8 @@ en consultant le QRCode si elle était sauvegardée en dure. Une évolution pour
 
 ## Consultation d'une URL courte
 
+#### Endpoint - GET : http://adresse_du_serveur/rest/{hash}
+
 Un second endpont utilisant le verbe GET et prenant en paramètre une chaîne de caractère permet d'être automatiquement
 redirigé vers l'URL originale si le paramètre correspond a un hash associé à une URL complète en base de données.
 
@@ -179,6 +181,8 @@ paramètres (régularité, nombre de jours d'ancienneté) de supprimer des URLs 
 derniers jours.
 
 ## GraphQL
+
+#### Endpoint - POST : http://adresse_du_serveur/graphql
 
 Par curiosité, et parce que CentralPay semble utiliser du graphQL, j'ai créé un endpoint permettant
 
