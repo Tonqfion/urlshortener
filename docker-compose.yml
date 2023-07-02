@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: centralpay
+      MARIADB_DATABASE: centralpay
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db:
+    driver: local

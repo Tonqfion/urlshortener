@@ -1,0 +1,19 @@
+scalar LocalDateTime
+
+type Query {
+    findAllUrl: [UrlEntity]
+    urlByHash(id: ID): UrlEntity
+}
+
+type Mutation {
+    saveUrl(url: String): UrlEntity
+}
+
+type UrlEntity {
+    hashId: ID
+    completeUrl: String
+    lastQueried: LocalDateTime
+    visits: Int
+    requests: Int
+    qrcodeImageString: String
+}
