@@ -46,7 +46,7 @@ public class UuidPoolServiceTest {
     @Test
     void test_getRandomString_ok() {
         // Given
-        Mockito.when(uuidPoolRepository.findFirstByOrderByRandomStringDesc()).thenReturn(Optional.of(givenEntity));
+        Mockito.when(uuidPoolRepository.findFirstByOrderByRandomStringAsc()).thenReturn(Optional.of(givenEntity));
 
         // When
         String result = tested.getRandomString();
@@ -58,7 +58,7 @@ public class UuidPoolServiceTest {
     @Test
     void test_getRandomString_throw_impossibleToShortenException() {
         // Given
-        Mockito.when(uuidPoolRepository.findFirstByOrderByRandomStringDesc()).thenReturn(Optional.empty());
+        Mockito.when(uuidPoolRepository.findFirstByOrderByRandomStringAsc()).thenReturn(Optional.empty());
 
         // Then
         Assertions.assertThrows(ImpossibleToShortenException.class, () -> tested.getRandomString());
