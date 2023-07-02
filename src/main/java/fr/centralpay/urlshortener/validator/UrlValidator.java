@@ -10,6 +10,9 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+/**
+ * Classe de validation des {@link UrlRequestDTO}
+ */
 @Slf4j
 public class UrlValidator implements ConstraintValidator<UrlConstraint, UrlRequestDTO> {
     @Override

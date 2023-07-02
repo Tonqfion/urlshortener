@@ -7,6 +7,9 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Représentation de l'objet UUID stocké en base dans le pool
+ */
 @Entity
 @Table(name = "uuid_pool")
 @Getter

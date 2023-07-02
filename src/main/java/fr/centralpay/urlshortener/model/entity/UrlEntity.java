@@ -12,6 +12,9 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 
+/**
+ * Réprésentation de l'objet stockée en base
+ */
 @Entity
 @Table(name = "url")
 @Getter

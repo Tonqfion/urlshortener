@@ -14,11 +14,21 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+/**
+ * Service regroupant les méthodes en lien avec les QR Codes
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class QRCodeService {
 
+    /**
+     * Méthode permettant de transformer une URL en QRCode au format bytes puis de convertir ces bytes en chaîne de
+     * caractère
+     *
+     * @param url l'URL en entrée
+     * @return l'image du QR Code au format String
+     */
     public String getQrImageAsByteArray(String url) {
         int imageSize = 320;
         try (var bos = new ByteArrayOutputStream()) {

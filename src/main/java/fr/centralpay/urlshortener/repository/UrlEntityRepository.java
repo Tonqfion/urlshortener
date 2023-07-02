@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+/**
+ * Composant d'accès à la table réprésentant par {@link UrlEntity}
+ */
 @Repository
 public interface UrlEntityRepository extends JpaRepository<UrlEntity, String> {
 

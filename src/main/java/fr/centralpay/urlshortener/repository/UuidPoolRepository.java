@@ -6,7 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Composant d'accès à la table réprésentant par {@link UuidPoolEntity}
+ */
 @Repository
 public interface UuidPoolRepository extends JpaRepository<UuidPoolEntity, String> {
-    Optional<UuidPoolEntity> findFirstByOrderByRandomStringDesc();
+    Optional<UuidPoolEntity> findFirstByOrderByRandomStringAsc();
 }

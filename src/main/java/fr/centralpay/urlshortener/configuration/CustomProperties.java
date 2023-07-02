@@ -5,6 +5,9 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Classe permettant de décrire les properties custom dans les fichiers *.properties
+ */
 @Configuration
 @ConfigurationProperties(prefix = "fr.centralpay.urlshortener")
 @Setter

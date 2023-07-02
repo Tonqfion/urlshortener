@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+/**
+ * Service gérant la logique métier en lien avec les URL
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -25,11 +28,24 @@ public class UrlService {
 
     private final QRCodeService qrCodeService;
 
+    /**
+     * Méthode qui va retourner une réponse contentant l'URL raccourcie depuis une URL d'origine
+     *
+     * @param longUrl l'URL longue contenu dans la requête
+     * @return une {@link UrlResponseDTO} contenant l'URL courte et la chaîne représentant le QRCode généré
+     */
     public UrlResponseDTO generateShortUrl(String longUrl) {
         var urlEntity = createNewOrFindUrlEntity(longUrl);
         return new UrlResponseDTO(urlEntity);
     }
 
+    /**
+     * Méthode qui, à partir d'une URL longue, va générer ou retrouver une {@link UrlEntity} et la sauvegarder ou la
+     * mettre à jour en base
+     *
+     * @param longUrl l'URL d'origine
+     * @return l'{@link UrlEntity} sauvegardée ou mise à jour
+     */
     public UrlEntity createNewOrFindUrlEntity(String longUrl) {
         var urlEntity = createNewOrFindExistingUrlEntityByDigest(Utils.getMD5Digest(), longUrl);
         if (urlEntity == null) {
@@ -42,6 +58,14 @@ public class UrlService {
         return urlEntity;
     }
 
+    /**
+     * Méthode qui à partir d'une URL longue et d'un {@link MessageDigest} va générer ou retrouver une
+     * {@link UrlEntity}
+     *
+     * @param digest  le {@link MessageDigest} utilisé avec un algorithme spécifique
+     * @param longUrl l'URL d'origine
+     * @return l'{@link UrlEntity} retrouvée ou instanciée
+     */
     private UrlEntity createNewOrFindExistingUrlEntityByDigest(MessageDigest digest, String longUrl) {
         log.info("Hashing {} de l'URL", digest.getAlgorithm());
         var hash = StringUtils.EMPTY;
@@ -69,6 +93,12 @@ public class UrlService {
         return newUrlEntity;
     }
 
+    /**
+     * Méthode qui, à partir d'une URL longue va créer et retourner une {@link UrlEntity}
+     *
+     * @param longUrl l'URL d'origine
+     * @return l'{@link UrlEntity} instanciée
+     */
     private UrlEntity createUrlEntityFromUuidPool(String longUrl) {
         log.info("Récupération d'une châine aléatoire pour l'identifiant de l'entrée et enregistrement");
         var randomString = uuidPoolService.getRandomString();
@@ -79,6 +109,13 @@ public class UrlService {
         return newUrlEntity;
     }
 
+    /**
+     * Méthode qui à partir d'un hash va retrouver une {@link UrlEntity} si cette dernière existe, la mettre à jour et
+     * renvoyer l'URL longue stockée
+     *
+     * @param hash le hash reçu de la requête
+     * @return l'URL longue associée au hash passé en paramètre
+     */
     public String retrieveOriginalUrl(String hash) {
         log.info("Recherche de l'URL correspondant au hash");
         Optional<UrlEntity> optUrlEntity = urlEntityRepository.findById(hash);
@@ -94,6 +131,11 @@ public class UrlService {
         return urlEntity.getCompleteUrl();
     }
 
+    /**
+     * Méthode appelée par la tâche programmée de purge pour supprimer les {@link UrlEntity} stockés en base
+     *
+     * @param urlDaysTtl le nombre de jour d'ancienneté limite avant suppression. Fixé dans la configuration
+     */
     public void removeOldUrlEntity(Integer urlDaysTtl) {
         var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         var expiryDate = LocalDateTime.now().minusDays(urlDaysTtl);

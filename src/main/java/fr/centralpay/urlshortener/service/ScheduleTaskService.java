@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service gérant la logique des tâches programmées spring
+ */
 @Service
 @Slf4j
 @ConditionalOnProperty(value = "fr.centralpay.urlshortener.scheduled-task-enabled", havingValue = "true")
@@ -18,6 +21,9 @@ public class ScheduleTaskService {
     private final UuidPoolService uuidPoolService;
     private final UrlService urlService;
 
+    /**
+     * Méthode qui, selon une expression CRON, va mettre à jour la table UUID Pool
+     */
     @Scheduled(cron = "${fr.centralpay.urlshortener.auto-update-uuuid-cron}")
     public void scheduledUuidPoolUpdate() {
         log.info("Mise à jour automatique de la table UUID Pool");
@@ -25,6 +31,9 @@ public class ScheduleTaskService {
         log.info("Fin de la tâche programmée de MAJ de la table uuid pool");
     }
 
+    /**
+     * Méthode qui, selon une expression CRON, va purger la table URL
+     */
     @Scheduled(cron = "${fr.centralpay.urlshortener.remove-old-url-cron}")
     public void scheduledOldUrlEntitiesDeletion() {
         log.info("Début de la tâche programmée de purge de la table URL");

@@ -1,5 +1,8 @@
 package fr.centralpay.urlshortener.util;
 
+/**
+ * Classe contenant les constantes utilisées par l'application
+ */
 public class Constants {
 
     public static final String INVALID_URL_ERROR_MESSAGE = "URL non valide";

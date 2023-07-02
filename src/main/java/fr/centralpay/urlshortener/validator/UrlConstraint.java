@@ -6,6 +6,9 @@ import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
+/**
+ * Interface permettant la création d'une annotation custom à appliquer au paramètre de la méthode post du controller
+ */
 @Documented
 @Constraint(validatedBy = UrlValidator.class)
 @Target({ElementType.PARAMETER})

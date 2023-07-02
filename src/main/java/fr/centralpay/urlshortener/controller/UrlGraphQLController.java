@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-
+/**
+ * Controller dédié au endpoint GraphQL
+ */
 @Controller
 @RequestMapping(value = Constants.GRAPHQL_MAPPING)
 @RequiredArgsConstructor
@@ -22,17 +24,34 @@ public class UrlGraphQLController {
     private final UrlEntityRepository urlEntityRepository;
     private final UrlService urlService;
 
+    /**
+     * Méthode GraphQL permettant de récupérer toutes les {@link UrlEntity} en base
+     *
+     * @return liste {@link UrlEntity}
+     */
     @QueryMapping
     public List<UrlEntity> findAllUrl() {
         return urlEntityRepository.findAll();
     }
 
+    /**
+     * Méthode permettant de retrouver une {@link UrlEntity} à partir d'un identifiant hashé
+     *
+     * @param id le hash (ou uuid raccourci)
+     * @return une {@link UrlEntity}
+     */
     @QueryMapping
     public UrlEntity urlByHash(@Argument String id) {
         var optUrl = urlEntityRepository.findById(id);
         return optUrl.orElse(null);
     }
 
+    /**
+     * Méthode permettant de sauvegarder une {@link UrlEntity} depuis une URL d'origine
+     *
+     * @param url URL au format chaîne de caractères
+     * @return l'{@link UrlEntity} créée
+     */
     @MutationMapping
     public UrlEntity saveUrl(@Argument String url) {
         return urlService.createNewOrFindUrlEntity(url);

@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/**
+ * Controller Advice permettant de gérer le comportement et d'intercepter des exceptions diverses en renvoyant une
+ * réponse HTTP avec une erreur adaptée dans le corps de la réponse
+ */
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
