@@ -1,6 +1,6 @@
 # Présentation
 
-Application de permettant de raccourcir une URL. Comprend une API REST et un endpoint GraphQL.
+Application permettant de raccourcir une URL. Comprend une API REST et un endpoint GraphQL.
 
 ## Stack technique
 
@@ -40,7 +40,8 @@ POST : http://adresse_du_serveur/rest
 }
 ```
 
-Après validation, l'URL sera hashée puis ce hash enregistré dans une base de données et renvoyé à l'appelant pour que ce
+Après validation, l'URL sera hashée puis ce hash raccourci et enregistré dans une base de données et renvoyé à l'
+appelant pour que ce
 dernier puisse partager l'adresse courte. L'adresse concatène l'adresse du serveur, le chemin des requêtes associées au
 controller (/rest) et le hash afin de récupérer l'adresse complète.
 
@@ -60,8 +61,8 @@ Lors de l'enregistrement de la donnée, les propriétés suivantes sont aliment�
 * l'URL complète
 * la date de création (initialisé au timestamp actuel)
 * le nombre de fois où cette URL a été raccouçie (initialisée à 1)
-* le nombre de fois où elle a été visitée (initialisée à 0)
-* la date de dernière consultation (demande de création d'une URL courte, ou visite de l'URL courte associée à l'URL
+* le nombre de fois où elle a été consultée (initialisée à 0)
+* la date de dernière demande (requête de création d'une URL courte, ou consultation de l'URL courte associée à l'URL
   longue, initialisée à la date du jour)
 
 ### Création du hash
@@ -83,11 +84,12 @@ décrites plus haut.
 En revanche, si le hash existe déjà, on va vérifier l'URL longue associée à l'enregistrement présent en base. Si celle
 que l'appelant demande à raccourcir est égale à celle présente en base, alors on ne crée pas un nouvel enregistrement.
 On met simplement à jour celui déjà présent en incrémentant le compteur de demande et en mettant à jour la date de
-dernière consultation.
+dernière consultation, puis on renvoie les informations à l'appelant depuis cet enregistrement pré-existant.
 
-Maintenant, si l'URL longue est différente, on est dans le cas d'une collision. Cela signifique que deux URL différentes
-ont généré le même hash. C'est statistiquement presque impossible, même sur une chaîne de 8 caractères, mais cela peut
-arriver. Dans ce cas, on va effectuer les mêmes étapes mais avec un hash utilisant l'algorithme SHA-256.
+Maintenant, si l'URL longue de l'entité retrouvée en base est différente de celle requêtée, on est dans le cas d'une
+collision de hash. Cela signifie que que deux URL différentes ont généré le même hash. C'est statistiquement presque
+impossible, même sur une chaîne de 8 caractères, mais cela peut arriver. Dans ce cas, on va effectuer les mêmes étapes
+mais avec un hash utilisant l'algorithme SHA-256.
 
 Si il y a également collision entre deux URLs différentes du hash SHA-256, on va récupérer une chaîne de caractère
 aléatoire, constituée des 8 premiers caractères d'un random UUID présents dans un pool de chaînes de caractères stockées
@@ -145,19 +147,21 @@ Par curiosité, et parce que CentralPay semble utiliser du graphQL, j'ai créé 
 2. D'afficher une unique URL
 3. De créer une URL
 
-# Limitations de l'application
+Consulter le fichier resources/graphql/schema.graphqls pour retrouver les requêtes et mutations disponibles
+
+# Limites de l'application
 
 ## Scalabilité de la base de données
 
-Utiliser MariaDB pour stocker des informations aussi simples, sans relations, ne semble pas idéale. Une ou deux base
+Utiliser MariaDB pour stocker des informations aussi simples, sans relations, ne semble pas idéal. Une ou deux base
 REDIS auraient pu faire l'affaire. Cependant, j'avais une base distante MariaDB à disposition via un hébergeur, ce qui
-permet de plus simplement brancher l'application sur cette dernière.
+permet de plus simplement brancher l'application sur cette dernière pour présentation.
 
 De même, l'évaluation des uuid à créer ne semble pas idéale. Dans le cadre d'un exercice, pas de soucis, mais si on
 s'imagine un nombre de données bien plus importante, effectuer des requêtes comparant une liste d'id à créer avec ceux
 potentiellement présents dans une gigantesque base pour éviter des collisions peut poser des problèmes importants.
 
 Une solution de remplacement serait peut être de simplement créer les UUID à la volée, sans les persister dans un pool,
-et s'il est présent de simplement en générer un nouveau et tenter à nouveau de sauvegarder l'URL.
+et s'il est présent de simplement en générer un nouveau et tenter de sauvegarder l'entité avec ce hash comme ID.
 
 
