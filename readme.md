@@ -2,19 +2,16 @@
 
 ## Version locale
 
-Clonez le repo, puis installer les dépendances avec maven. Installez Docker Desktop puis, via un terminal, depuis le
-dossier dans lequel le repo a été cloné, lancez la commande
-
-```shell
-docker-compose up
-```
+Clonez le repo, puis installer les dépendances avec maven. Installez Docker Desktop. Pas besoin d'exécuter la commande
+docker compose, Spring ayant récemment intégré une dépendance docker-compose permettant d'exécuter la création du ou des
+container présents dans le fichier directement s'ils ne sont pas détectés sur la machine.
 
 Une image MariaDB sera téléchargée puis lancée dans un container Docker en local avec les tables nécessaires à
-l'application initalisée.
+l'application.
 
-Lancez ensuite l'application depuis votre IDE en utilisant le profil "local" afin que le fichier
-application-local.properties soit utilisée. L'IDE pourra vous demander d'installer une version 17 de la JDK pour pouvoir
-compiler le projet.
+Lancez ensuite l'application depuis votre IDE en utilisant le profil par défaut (utilisation du fichier
+application.properties). L'IDE pourra vous demander d'installer une version 17 de la JDK pour pouvoir compiler le
+projet.
 
 Autre solution, vous pouvez lancer l'application après avoir cloné le repo via la commande maven suivante (sur Windows)
 depuis la racine du projet.
