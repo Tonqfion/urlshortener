@@ -42,8 +42,7 @@ public class UrlGraphQLController {
      */
     @QueryMapping
     public UrlEntity urlByHash(@Argument String id) {
-        var optUrl = urlEntityRepository.findById(id);
-        return optUrl.orElse(null);
+        return urlService.retrieveAndUpdateUrlEntityByHash(id);
     }
 
     /**

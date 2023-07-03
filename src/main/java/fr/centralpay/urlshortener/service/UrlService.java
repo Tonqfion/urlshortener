@@ -117,6 +117,11 @@ public class UrlService {
      * @return l'URL longue associée au hash passé en paramètre
      */
     public String retrieveOriginalUrl(String hash) {
+        UrlEntity urlEntity = retrieveAndUpdateUrlEntityByHash(hash);
+        return urlEntity.getCompleteUrl();
+    }
+
+    public UrlEntity retrieveAndUpdateUrlEntityByHash(String hash) {
         log.info("Recherche de l'URL correspondant au hash");
         Optional<UrlEntity> optUrlEntity = urlEntityRepository.findById(hash);
         if (optUrlEntity.isEmpty()) {
@@ -128,7 +133,7 @@ public class UrlService {
         urlEntity.setVisits(urlEntity.getVisits() + 1);
         urlEntity.setLastQueried(LocalDateTime.now());
         urlEntityRepository.save(urlEntity);
-        return urlEntity.getCompleteUrl();
+        return urlEntity;
     }
 
     /**

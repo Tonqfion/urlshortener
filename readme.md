@@ -2,9 +2,30 @@
 
 ## Version locale
 
-Clonez le repo, puis installer les dépendances avec maven. Installez Docker Desktop. Pas besoin d'exécuter la commande
-docker compose, Spring ayant récemment intégré une dépendance docker-compose permettant d'exécuter la création du ou des
-container présents dans le fichier directement s'ils ne sont pas détectés sur la machine.
+Nécessite l'installation de Docker Desktop et d'avoir cloner ou télécharger le repo sur votre poste.
+
+### Version standalone
+
+Si vous souhaitez lancer directement l'application sans la compiler directement sur votre machine, vous pouvez exécuter
+la commande suivante depuis le dossier où le repo a été cloné :
+
+```shell
+docker-compose -f docker-compose-standalone.yml up
+```
+
+Cette commande lancera le téléchargement d'une image MariaDB initialisée avec les tables et la création d'une image de
+notre application par le biais d'un build maven utilisant des properties spécifiques à la version docker de l'
+application. Les deux images seront ensuite lancées dans un container et l'application sera accessible sur l'
+adresse http://localhost:8085
+
+### Version basique à lancer directement sur le poste
+
+Pour une version plus simple, qui utilisera également docker mais lancera seulement une image MariaDB dans un container,
+lancez la commande
+
+```shell
+docker-compose up
+```
 
 Une image MariaDB sera téléchargée puis lancée dans un container Docker en local avec les tables nécessaires à
 l'application.
@@ -51,7 +72,13 @@ Apache Language Commons3\
 GraphQL pour Spring boot\
 GraphQL DateTime (Scalar GraphQL pour Java Temporals)\
 Google Zxing pour création de QRCode\
+OpenAPI UI pour Spring\
 Lombok
+
+## Documentation des endpoint
+
+* API rest : http://adresse_du_serveur/swagger-ui.html (par défaut : http://localhost:8085/swagger-ui.html)
+* GRAPHQL : http://adresse_du_serveur/graphiql (par défaut : http://localhost:8085/graphiql)
 
 # Fonctionnalités
 
@@ -187,7 +214,8 @@ Par curiosité, et parce que CentralPay semble utiliser du graphQL, j'ai créé 
 2. D'afficher une unique URL
 3. De créer une URL
 
-Consulter le fichier resources/graphql/schema.graphqls pour retrouver les requêtes et mutations disponibles
+Consulter le fichier resources/graphql/schema.graphqls pour retrouver les requêtes et mutations disponibles. Doc et
+tests dispo : http://localhost:8085/graphiql
 
 # Limites de l'application
 
@@ -204,4 +232,8 @@ potentiellement présents dans une gigantesque base pour éviter des collisions 
 Une solution de remplacement serait peut être de simplement créer les UUID à la volée, sans les persister dans un pool,
 et s'il est présent de simplement en générer un nouveau et tenter de sauvegarder l'entité avec ce hash comme ID.
 
+## Sécurité permissive
 
+Malgré la présence de validations sur la requête envoyée en entrée, la sécurisation de l'API reste sommaire. Pas
+d'utilisateur authentifié, pas de gestion du throttling ou d'un nombre max de requêtes sur une période donnée par
+appelant. Ce pourrait être un autre axe d'amélioration.
