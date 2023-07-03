@@ -237,3 +237,9 @@ et s'il est présent de simplement en générer un nouveau et tenter de sauvegar
 Malgré la présence de validations sur la requête envoyée en entrée, la sécurisation de l'API reste sommaire. Pas
 d'utilisateur authentifié, pas de gestion du throttling ou d'un nombre max de requêtes sur une période donnée par
 appelant. Ce pourrait être un autre axe d'amélioration.
+
+## Limitation GraphQL
+
+Etant novice en la matière, le endpoint GraphQL n'est pas extrêmement élaboré. J'aurais par exemple aimé aller plus loin
+dans la gestion des erreurs, ou étudier comment faire pour qu'une propriété puisse être utilisable comme argument d'une
+requête, mais ne puisse pas être sélectionné lors de la consultation (par exemple l'ID).
